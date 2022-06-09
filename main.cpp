@@ -30,6 +30,10 @@ int main()
   while (std::getline(std::cin, strOfArgs))
   {
     args = splitString(strOfArgs);
+    if (args.empty() == true)
+    {
+      continue;
+    }
     cmd = args[0];
 
     if (cmd == "help")
@@ -303,6 +307,10 @@ int main()
           dictNames.pop_back();
         }
       }
+    }
+    else if (cmd == "exit")
+    {
+      break;
     }
   }
 

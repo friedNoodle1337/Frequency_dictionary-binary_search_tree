@@ -45,43 +45,61 @@ bool readFiles(std::vector< std::string >& files, std::vector < std::string >& d
 
 bool makeSubstring(std::string& temp)
 {
-  if (temp[0] == '.' || temp[0] == ',' || temp[0] == '!' || temp[0] == '?')
+  std::size_t size = temp.size() - 1;
+
+  if (temp[0] == '.' || temp[0] == ',' || temp[0] == '!' || temp[0] == '?' ||
+    temp[0] == ')' || temp[0] == ']' || temp[0] == '}' ||
+    temp[size] == '(' || temp[size] == '[' || temp[size] == '{')
   {
     return false;
   }
 
   if (temp[0] == '(' || temp[0] == '[' || temp[0] == '{' || temp[0] == '"')
   {
-    temp = temp.substr(1, temp.size());
-
-    if (temp[temp.size()] == ')' || temp[temp.size()] == ']' ||
-      temp[temp.size()] == '}' || temp[temp.size()] == '"')
+    if (temp[1] == '.' || temp[1] == ',' || temp[1] == '!' || temp[1] == '?' ||
+      temp[1] == ')' || temp[1] == ']' || temp[1] == '}')
     {
-      temp = temp.substr(1, temp.size() - 1);
+      return false;
     }
-    else if (temp[temp.size() - 1] == '.' || temp[temp.size() - 1] == ',' ||
-      temp[temp.size() - 1] == '!' || temp[temp.size() - 1] == '?')
+
+    temp = temp.substr(1, size);
+
+    if (temp[size - 1] == ')' || temp[size - 1] == ']' ||
+      temp[size - 1] == '}' || temp[size - 1] == '"')
     {
-      temp = temp.substr(1, temp.size() - 2);
+      if (temp[size - 2] == '.' || temp[size - 2] == ',' ||
+        temp[size - 2] == '!' || temp[size - 2] == '?')
+      {
+        temp = temp.substr(0, size - 2);
+      }
+      else
+      {
+        temp = temp.substr(0, size - 1);
+      }
+    }
+    else if (temp[size - 1] == '.' || temp[size - 1] == ',' ||
+      temp[size - 1] == '!' || temp[size - 1] == '?')
+    {
+      temp = temp.substr(0, size - 1);
     }
   }
-  else if (temp[temp.size()] == ')' || temp[temp.size()] == ']' ||
-    temp[temp.size()] == '}' || temp[temp.size()] == '"')
+  else if (temp[size] == ')' || temp[size] == ']' ||
+    temp[size] == '}' || temp[size] == '"')
   {
-    if (temp[temp.size() - 1] == '.' || temp[temp.size() - 1] == ',' ||
-      temp[temp.size() - 1] == '!' || temp[temp.size() - 1] == '?')
+    if (temp[size - 1] == '.' || temp[size - 1] == ',' ||
+      temp[size - 1] == '!' || temp[size - 1] == '?')
     {
-      temp = temp.substr(0, temp.size() - 2);
+      temp = temp.substr(0, size - 1);
     }
     else
     {
-      temp = temp.substr(0, temp.size() - 1);
+      temp = temp.substr(0, size);
     }
   }
-  else if (temp[temp.size()] == '.' || temp[temp.size()] == ',' ||
-    temp[temp.size()] == '!' || temp[temp.size()] == '?')
+  else if (temp[size] == '.' || temp[size] == ',' ||
+    temp[size] == '!' || temp[size] == '?')
   {
-    temp = temp.substr(0, temp.size() - 1);
+    temp = temp.substr(0, size);
   }
 
   return true;
@@ -90,6 +108,11 @@ bool makeSubstring(std::string& temp)
 std::vector< std::string > splitString(const std::string& str)
 {
   std::vector< std::string > words;
+  if (str == "")
+  {
+    return words;
+  }
+
 
   std::size_t begin = 0;
   std::size_t end = str.find(' ', begin);
@@ -97,15 +120,16 @@ std::vector< std::string > splitString(const std::string& str)
   while (end != -1)
   {
     temp = str.substr(begin, end - begin);
+
+    begin = end + 1;
+    end = str.find(' ', begin);
+
     if (makeSubstring(temp) == false)
     {
       continue;
     }
 
     words.push_back(temp);
-
-    begin = end + 1;
-    end = str.find(' ', begin);
   }
 
   temp = str.substr(begin);
