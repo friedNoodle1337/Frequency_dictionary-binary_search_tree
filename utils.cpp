@@ -261,7 +261,7 @@ void list(const std::map< std::string, BinarySearchTree< std::string, std::size_
   }
   if (check == false)
   {
-    std::cerr << "There is not any dict\n";
+    std::cout << "There is not any dict\n";
   }
 }
 

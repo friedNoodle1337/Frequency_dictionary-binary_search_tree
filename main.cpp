@@ -19,9 +19,9 @@ int main()
     return -1;
   }
 
-  std::string cmd = "";
   std::string strOfArgs = "";
   std::vector< std::string > args;
+  std::string cmd = "";
   std::string word = "";
   std::size_t freq = 0;
   std::string nameOfDict1 = "";
@@ -79,33 +79,34 @@ int main()
       {
         continue;
       }
-      if (isNumber(args[2]) == false)
+      else if (isNumber(args[2]) == false)
       {
         std::cerr << "Invalid freq\n";
-        continue;
       }
-      if (makeSubstring(word) == false)
+      else if (makeSubstring(word) == false)
       {
         std::cerr << "Invalid word\n";
-        continue;
-      }
-      word = args[1];
-      freq = std::stoull(args[2]);
-      nameOfDict1 = args[3];
-      if (dictOfDicts.find(nameOfDict1) != dictOfDicts.end())
-      {
-        if (insert(word, freq, dictOfDicts.find(nameOfDict1)->second) == true)
-        {
-          std::cout << "Insertion completed successfully\n";
-        }
-        else
-        {
-          std::cerr << "Insertion failed\n";
-        }
       }
       else
       {
-        std::cerr << "Dict \"" << nameOfDict1 << "\" is not found\n";
+        word = args[1];
+        freq = std::stoull(args[2]);
+        nameOfDict1 = args[3];
+        if (dictOfDicts.find(nameOfDict1) != dictOfDicts.end())
+        {
+          if (insert(word, freq, dictOfDicts.find(nameOfDict1)->second) == true)
+          {
+            std::cout << "Insertion completed successfully\n";
+          }
+          else
+          {
+            std::cerr << "Insertion failed\n";
+          }
+        }
+        else
+        {
+          std::cerr << "Dict \"" << nameOfDict1 << "\" is not found\n";
+        }
       }
     }
     else if (cmd == "delete")
