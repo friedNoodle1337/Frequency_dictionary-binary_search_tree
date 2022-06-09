@@ -310,7 +310,7 @@ BinarySearchTree< K, V >::BinarySearchTree(const BinarySearchTree< K, V >& other
 		nodes.pop();
 		while (nodes.empty() == false)
 		{
-			insert_or_assign(current->key_, current->value_);
+			insert(current->key_, current->value_);
 			if (nodes.front()->left_ != nullptr)
 			{
 				nodes.push(nodes.front()->left_);
@@ -322,7 +322,7 @@ BinarySearchTree< K, V >::BinarySearchTree(const BinarySearchTree< K, V >& other
 			current = nodes.front();
 			nodes.pop();
 		}
-		insert_or_assign(current->key_, current->value_);
+		insert(current->key_, current->value_);
 	}
 	else
 	{
